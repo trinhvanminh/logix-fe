@@ -7,6 +7,7 @@ const FilterFilm = () => {
   const filterTitleSx = {
     fontweight: "bold",
     marginBottom: "16px",
+    color: "white",
   };
   return (
     <Stack

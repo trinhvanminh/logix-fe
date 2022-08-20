@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, Divider } from "@mui/material";
 import React from "react";
 import FilterFilm from "../../components/FilterFilm";
 import MovieList from "../../components/MovieList";
@@ -9,7 +9,6 @@ const HomePage = () => {
       sx={{
         pt: "100px",
         bgcolor: (theme) => theme.default.bgColor,
-        height: "calc(200vh - 80px)",
       }}
     >
       <Container maxWidth="lg">

@@ -7,16 +7,19 @@ import {
   Stack,
   Tab,
   Tabs,
-  Typography,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import UserMenu from "../UserMenu";
+import { setIsOpenLoginPopUp } from "../../store/Global";
 import CustomButton from "../CustomButton";
+import UserMenu from "../UserMenu";
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [value, setValue] = useState(1);
+  const isAuthenticated = useSelector((state) => state.Auth.authenticated);
   const [scrollTop, setScrollTop] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -45,7 +48,7 @@ const Header = () => {
         transition: "background-color 0.3s ease-in-out",
       }}
     >
-      <Container maxWidth="xl" sx={{ height: "100%" }}>
+      <Container maxWidth="lg" sx={{ height: "100%" }}>
         <Stack
           direction="row"
           alignItems="center"
@@ -63,6 +66,7 @@ const Header = () => {
                 sm: "block",
                 xs: "block",
               },
+              color: "white",
             }}
           >
             <MenuIcon />
@@ -85,6 +89,9 @@ const Header = () => {
                 ".MuiTabs-flexContainer": {
                   height: "100%",
                 },
+                ".MuiButtonBase-root": {
+                  color: "white",
+                },
               },
               display: {
                 lg: "block",
@@ -95,18 +102,23 @@ const Header = () => {
               },
             }}
           >
-            <Tab value={1} label={<Typography>Phim mới</Typography>} />
-            <Tab value={2} label={<Typography>Phim lẻ</Typography>} />
-            <Tab value={3} label={<Typography>Phim bộ</Typography>} />
-            <Tab value={4} label={<Typography>Phim chiếu rạp</Typography>} />
+            <Tab value={1} label="Phim mới" />
+            <Tab value={2} label="Phim lẻ" />
+            <Tab value={3} label="Phim bộ" />
+            <Tab value={4} label="Phim chiếu rạp" />
           </Tabs>
           <Stack
             spacing={2}
             direction="row"
             sx={{ alignItems: "center", height: "32px" }}
           >
-            <UserMenu />
-            <CustomButton onClick={() => navigate("/auth")}>Login</CustomButton>
+            {isAuthenticated ? (
+              <UserMenu />
+            ) : (
+              <CustomButton onClick={() => dispatch(setIsOpenLoginPopUp(true))}>
+                Login
+              </CustomButton>
+            )}
           </Stack>
         </Stack>
       </Container>

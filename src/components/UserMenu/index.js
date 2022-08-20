@@ -1,22 +1,20 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Logout from "@mui/icons-material/Logout";
-import Settings from "@mui/icons-material/Settings";
 import { Avatar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthenticated } from "../../store/Auth";
 import stringAvatar from "../../utils/stringAvatar";
-// import { useDispatch } from "react-redux";
-// import { setAuthenticated } from "store/Auth";
+
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const id = open ? "profile" : undefined;
-  //   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,8 +23,8 @@ export default function UserMenu() {
   };
   const handleLogout = () => {
     handleClose();
-    // localStorage.removeItem("token");
-    // dispatch(setAuthenticated(false));
+    localStorage.removeItem("token");
+    dispatch(setAuthenticated(false));
   };
   return (
     <>
@@ -56,17 +54,11 @@ export default function UserMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => navigate("/user")}>
+        <MenuItem>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
           </ListItemIcon>
           Profile
-        </MenuItem>
-        <MenuItem onClick={() => navigate("/company")}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Balance
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

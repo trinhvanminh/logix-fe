@@ -28,7 +28,12 @@ export default function FilterMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        sx={{ ".MuiPaper-root": { bgcolor: (theme) => theme.default.bgColor } }}
+        sx={{
+          ".MuiPaper-root": {
+            bgcolor: (theme) => theme.default.bgColor,
+            color: "white",
+          },
+        }}
       >
         <MenuItem onClick={handleClose} disableRipple>
           Phim lẻ
