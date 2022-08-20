@@ -71,7 +71,7 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Button sx={{ height: "100%" }}>
+          <Button sx={{ height: "100%" }} onClick={() => navigate("/")}>
             <img
               src={require("../../assets/images/logix-logo.png")}
               alt="logo"
