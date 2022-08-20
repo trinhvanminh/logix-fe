@@ -1,6 +1,6 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Logout from "@mui/icons-material/Logout";
-import { Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
@@ -27,7 +27,7 @@ export default function UserMenu() {
     dispatch(setAuthenticated(false));
   };
   return (
-    <>
+    <Box>
       <IconButton
         onClick={handleClick}
         size="small"
@@ -49,24 +49,25 @@ export default function UserMenu() {
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
             backgroundColor: (theme) => theme.default.secondBgColor,
+            color: "white",
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "white" }}>
             <AccountCircleIcon fontSize="small" />
           </ListItemIcon>
           Profile
         </MenuItem>
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "white" }}>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
       </Menu>
-    </>
+    </Box>
   );
 }

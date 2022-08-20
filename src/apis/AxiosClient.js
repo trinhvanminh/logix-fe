@@ -1,4 +1,6 @@
 import axios from "axios";
+export const baseUrl = "http://localhost:4000";
+
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 const axiosClient = axios.create({

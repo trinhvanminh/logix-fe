@@ -110,7 +110,12 @@ const Header = () => {
           <Stack
             spacing={2}
             direction="row"
-            sx={{ alignItems: "center", height: "32px" }}
+            sx={{
+              alignItems: "center",
+              height: "32px",
+              minWidth: "140px",
+              justifyContent: "right",
+            }}
           >
             {isAuthenticated ? (
               <UserMenu />

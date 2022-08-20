@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Grid, Typography } from "@mui/material";
 import React from "react";
 import FilterMenu from "../FilterMenu";
 
@@ -10,43 +9,41 @@ const FilterFilm = () => {
     color: "white",
   };
   return (
-    <Stack
-      direction={"row"}
-      flexWrap={"wrap"}
-      gap={2}
-      justifyContent="space-between"
+    <Grid
+      container
       sx={{
         bgcolor: (theme) => theme.default.secondBgColor,
         borderRadius: "8px",
         p: "16px",
         mb: 4,
       }}
+      spacing={1}
     >
-      <Stack>
+      <Grid item xs={6} sm={4} md={2}>
         <Typography sx={filterTitleSx}>Loại phim:</Typography>
         <FilterMenu />
-      </Stack>
-      <Stack>
+      </Grid>
+      <Grid item xs={6} sm={4} md={2}>
         <Typography sx={filterTitleSx}>Thể loại:</Typography>
         <FilterMenu />
-      </Stack>
-      <Stack>
+      </Grid>
+      <Grid item xs={6} sm={4} md={2}>
         <Typography sx={filterTitleSx}>Quốc gia:</Typography>
         <FilterMenu />
-      </Stack>
-      <Stack>
+      </Grid>
+      <Grid item xs={6} sm={4} md={2}>
         <Typography sx={filterTitleSx}>Năm:</Typography>
         <FilterMenu />
-      </Stack>
-      <Stack>
-        <Typography sx={filterTitleSx}>Thời lượng</Typography>
+      </Grid>
+      <Grid item xs={6} sm={4} md={2}>
+        <Typography sx={filterTitleSx}>Thời lượng:</Typography>
         <FilterMenu />
-      </Stack>
-      <Stack>
+      </Grid>
+      <Grid item xs={6} sm={4} md={2}>
         <Typography sx={filterTitleSx}>Sắp xếp:</Typography>
         <FilterMenu />
-      </Stack>
-    </Stack>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -4,7 +4,7 @@ import MovieItem from "../MovieItem";
 
 const MovieList = () => {
   return (
-    <Box>
+    <Box sx={{ pb: 1 }}>
       <Typography
         sx={{
           fontSize: "20px",
@@ -17,8 +17,8 @@ const MovieList = () => {
       </Typography>
       <Divider sx={{ bgcolor: (theme) => theme.default.lightPurple, mb: 1 }} />
       <Grid container spacing={2}>
-        {[...Array(8).keys()].map(() => (
-          <MovieItem />
+        {[...Array(8).keys()].map((k) => (
+          <MovieItem key={k} />
         ))}
       </Grid>
     </Box>
