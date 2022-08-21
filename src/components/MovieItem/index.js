@@ -110,7 +110,9 @@ const MovieItem = ({ movie }) => {
                   },
                 }}
                 value={
-                  movie?.like_count + movie?.dislike_count === 0
+                  !isAuthenticated
+                    ? 0
+                    : movie?.like_count + movie?.dislike_count === 0
                     ? 0
                     : movie?.rate || 1
                 }
@@ -136,6 +138,8 @@ const MovieItem = ({ movie }) => {
                 labels[
                   hover !== -1
                     ? hover
+                    : !isAuthenticated
+                    ? 0
                     : movie?.like_count + movie?.dislike_count === 0
                     ? 0
                     : movie?.rate || 1
@@ -147,6 +151,8 @@ const MovieItem = ({ movie }) => {
                   labels[
                     hover !== -1
                       ? hover
+                      : !isAuthenticated
+                      ? 0
                       : movie?.like_count + movie?.dislike_count === 0
                       ? 0
                       : movie?.rate || 1
