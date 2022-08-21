@@ -9,7 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { LoginApi, RegisterApi, ResetPasswordApi } from "../../apis/AuthApis";
+import { LoginApi, RegisterApi, ResetPasswordApi } from "../../apis/Auth";
 import { setAuthenticated } from "../../store/Auth";
 import { setIsOpenLoginPopUp, setLoading } from "../../store/Global";
 import CustomButton from "../CustomButton";
@@ -109,7 +109,7 @@ const LoginPopUp = () => {
         username: !isEmail && data.usernameOremail,
         password: data.password,
       };
-      const { response, error } = await LoginApi(payload);
+      const { response } = await LoginApi(payload);
       if (response) {
         handleClose();
         data?.keepLogin && localStorage.setItem("token", response.accessToken);
@@ -118,7 +118,7 @@ const LoginPopUp = () => {
       dispatch(setLoading(false));
     }
     if (isLoginMode === 2) {
-      const { response, error } = await RegisterApi(data);
+      const { response } = await RegisterApi(data);
       if (response) {
         handleClose();
         localStorage.setItem("token", response.accessToken);
@@ -127,7 +127,7 @@ const LoginPopUp = () => {
       dispatch(setLoading(false));
     }
     if (isLoginMode === 3) {
-      const { response, error } = await ResetPasswordApi(data);
+      const { response } = await ResetPasswordApi(data);
       if (response) {
         handleChangeLoginMode(4);
       }

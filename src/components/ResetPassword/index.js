@@ -4,7 +4,7 @@ import { Box, Container, Grid, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { ConfirmResetPasswordApi } from "../../apis/AuthApis";
+import { ConfirmResetPasswordApi } from "../../apis/Auth";
 import { setIsOpenLoginPopUp } from "../../store/Global";
 import { useDispatch } from "react-redux";
 import CustomButton from "../CustomButton";

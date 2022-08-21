@@ -1,3 +1,8 @@
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+
 import StarIcon from "@mui/icons-material/Star";
 import {
   Card,
@@ -9,9 +14,10 @@ import {
   Box,
   Chip,
   CardActions,
+  IconButton,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenLoginPopUp } from "../../store/Global";
 
@@ -23,19 +29,29 @@ const labels = {
   5: { text: "Tuyệt Vời", bgcolor: "#66bb6a" },
 };
 
-const MovieItem = () => {
+const MovieItem = ({ movie }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.Auth.authenticated);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(
+    parseInt((movie?.like * 5) / (movie?.like + movie?.dislike))
+  );
   const [hover, setHover] = React.useState(-1);
+  const [likeStatus, setlikeStatus] = useState(0);
 
-  const handleRating = (event, newValue) => {
+  useEffect(() => {
+    if (movie?.my_rate_status) {
+      setlikeStatus(movie.my_rate_status);
+    }
+  }, [movie]);
+
+  const handleLikeDislike = (value) => {
     if (!isAuthenticated) {
       dispatch(setIsOpenLoginPopUp(true));
       return;
     }
-    setValue(newValue);
-    // call api
+    setlikeStatus(value);
+    //call api
+    // if errror => setlikeStatus(0)
   };
 
   return (
@@ -54,8 +70,17 @@ const MovieItem = () => {
       >
         <CardMedia
           component="img"
-          image="https://image.tmdb.org/t/p/w342/q54qEgagGOYCq5D1903eBVMNkbo.jpg"
-          sx={{ cursor: "pointer" }}
+          image={movie?.thumbnail_url}
+          sx={{
+            cursor: "pointer",
+            height: "300px",
+            objectFit: "cover",
+            transition: "all 0.1s ease-in-out",
+            ":hover": {
+              opacity: 0.6,
+              scale: "1.02",
+            },
+          }}
         />
         <CardContent>
           <Box
@@ -76,7 +101,6 @@ const MovieItem = () => {
                   },
                 }}
                 value={value}
-                onChange={handleRating}
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
                 }}
@@ -85,10 +109,13 @@ const MovieItem = () => {
                 }
               />
               <Typography
-                sx={{ fontSize: "12px", color: "#ccc" }}
+                sx={{
+                  fontSize: "12px",
+                  color: "#ccc",
+                }}
                 component="span"
               >
-                (15)
+                ({movie?.like + movie?.dislike || 0})
               </Typography>
             </Stack>
             {value !== null && (
@@ -103,14 +130,58 @@ const MovieItem = () => {
               />
             )}
           </Box>
-          <Typography sx={{ fontWeight: "bold", color: "white" }}>
-            The Sandman: Người cát
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              color: "white",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              my: 1,
+              cursor: "pointer",
+              ":hover": {
+                textDecoration: "underline",
+              },
+            }}
+            title={movie?.title}
+          >
+            {movie?.title}
           </Typography>
-          <Typography sx={{ fontSize: "12px", color: "white" }}>
-            Doraemon: Nobita Và Cuộc Chiến Vũ Trụ Tí Hon 2021
+          <Typography
+            sx={{
+              fontSize: "12px",
+              color: "#ccc",
+              maskImage: "linear-gradient(#fff,#fff,hsla(0,0%,100%,0))",
+              maxHeight: "34px",
+              overflow: "hidden",
+            }}
+            title={movie?.description}
+          >
+            {movie?.description}
           </Typography>
         </CardContent>
-        <CardActions></CardActions>
+        <CardActions sx={{ mt: -2 }}>
+          <Stack direction="row">
+            {likeStatus !== 1 ? (
+              <IconButton onClick={() => handleLikeDislike(1)}>
+                <ThumbUpOffAltIcon sx={{ color: "#9099a0" }} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => handleLikeDislike(0)}>
+                <ThumbUpIcon sx={{ color: "green" }} />
+              </IconButton>
+            )}
+            {likeStatus !== -1 ? (
+              <IconButton onClick={() => handleLikeDislike(-1)}>
+                <ThumbDownOffAltIcon sx={{ color: "#9099a0" }} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => handleLikeDislike(0)}>
+                <ThumbDownAltIcon sx={{ color: "green" }} />
+              </IconButton>
+            )}
+          </Stack>
+        </CardActions>
       </Card>
     </Grid>
   );
