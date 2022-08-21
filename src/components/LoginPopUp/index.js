@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { LoginApi, RegisterApi, ResetPasswordApi } from "../../apis/AuthApis";
 import { setAuthenticated } from "../../store/Auth";
 import { setIsOpenLoginPopUp, setLoading } from "../../store/Global";
 import CustomButton from "../CustomButton";
@@ -30,10 +31,24 @@ const LoginPopUp = () => {
 
   const schemaLogin = yup
     .object({
-      email: yup
+      usernameOremail: yup
         .string()
-        .email("Email must be a valid email")
-        .required("Email is required"),
+        .required("Username or email is required")
+        .test(
+          "username-or-email",
+          "Enter valid Username/Email",
+          function (value) {
+            const emailRegex =
+              /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            const usernameRegex = /^[a-z0-9_-]{3,16}$/;
+            let isValidEmail = emailRegex.test(value);
+            let isValidUsername = usernameRegex.test(value);
+            if (!isValidEmail && !isValidUsername) {
+              return false;
+            }
+            return true;
+          }
+        ),
       password: yup.string().required("Password is required"),
     })
     .required();
@@ -51,6 +66,19 @@ const LoginPopUp = () => {
         .string()
         .email("Email must be a valid email")
         .required("Email is required"),
+      username: yup
+        .string()
+        .min(2, "Mininum 2 characters")
+        .max(30, "Maximum 30 characters")
+        .test("username", "Enter valid Username", function (value) {
+          const usernameRegex = /^[a-z0-9_-]{3,16}$/;
+          let isValidEmail = usernameRegex.test(value);
+          if (!isValidEmail) {
+            return false;
+          }
+          return true;
+        })
+        .required("Username is required"),
       password: yup.string().required("Password is required"),
       password_confirm: yup
         .string()
@@ -68,41 +96,37 @@ const LoginPopUp = () => {
     ),
   });
   const onSubmit = async (data) => {
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
     if (isLoginMode === 1) {
-      const payload = { email: data.email, password: data.password };
-      // const { response, error } = await LoginApi(payload);
-      const { response, error } = {
-        response: { access_token: "token" },
-        error: null,
+      const isEmail =
+        /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+          data.usernameOremail
+        );
+      const payload = {
+        email: isEmail && data.usernameOremail,
+        username: !isEmail && data.usernameOremail,
+        password: data.password,
       };
-      if (response) {
+      const res = await LoginApi(payload);
+      if (res) {
         handleClose();
-        localStorage.setItem("token", response.access_token);
+        data?.keepLogin && localStorage.setItem("token", res.accessToken);
         dispatch(setAuthenticated(true));
         dispatch(setLoading(false));
       }
     }
     if (isLoginMode === 2) {
-      // const { response, error } = await RegisterApi(data);
-      const { response, error } = {
-        response: { access_token: "token" },
-        error: null,
-      };
-      if (response) {
+      const res = await RegisterApi(data);
+      if (res) {
         handleClose();
-        localStorage.setItem("token", response.access_token);
+        localStorage.setItem("token", res.accessToken);
         dispatch(setAuthenticated(true));
         dispatch(setLoading(false));
       }
     }
     if (isLoginMode === 3) {
-      // const { response, error } = await ResetPasswordApi(data);
-      const { response, error } = {
-        response: { access_token: "token" },
-        error: null,
-      };
-      if (response) {
+      const res = await ResetPasswordApi(data);
+      if (res) {
         dispatch(setLoading(false));
         handleChangeLoginMode(4);
       }
@@ -142,7 +166,7 @@ const LoginPopUp = () => {
               <Grid container rowSpacing={"36px"}>
                 <Grid item xs={12}>
                   <Controller
-                    name="email"
+                    name="usernameOremail"
                     control={control}
                     render={({
                       field: { onChange },
@@ -150,11 +174,14 @@ const LoginPopUp = () => {
                     }) => {
                       return (
                         <>
-                          <label htmlFor="email" style={{ color: "white" }}>
-                            Email:
+                          <label
+                            htmlFor="usernameOremail"
+                            style={{ color: "white" }}
+                          >
+                            Email or Username:
                           </label>
                           <TextField
-                            id="email"
+                            id="usernameOremail"
                             fullWidth
                             error={error?.message ? true : false}
                             onChange={onChange}
@@ -293,7 +320,7 @@ const LoginPopUp = () => {
               onSubmit={handleSubmit(onSubmit)}
               style={{ marginTop: "30px" }}
             >
-              <Grid container rowSpacing={"36px"}>
+              <Grid container rowSpacing={"20px"}>
                 <Grid item xs={12}>
                   <Controller
                     name="email"
@@ -309,6 +336,32 @@ const LoginPopUp = () => {
                           </label>
                           <TextField
                             id="email"
+                            fullWidth
+                            error={error?.message ? true : false}
+                            onChange={onChange}
+                            autoComplete="off"
+                            helperText={error ? error.message : null}
+                          />
+                        </>
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Controller
+                    name="username"
+                    control={control}
+                    render={({
+                      field: { onChange },
+                      fieldState: { error },
+                    }) => {
+                      return (
+                        <>
+                          <label htmlFor="username" style={{ color: "white" }}>
+                            Username:
+                          </label>
+                          <TextField
+                            id="username"
                             fullWidth
                             error={error?.message ? true : false}
                             onChange={onChange}
@@ -392,7 +445,7 @@ const LoginPopUp = () => {
                 sx={{
                   fontWeight: 400,
                   fontSize: 14,
-                  pt: 15,
+                  pt: 2,
                   color: "white",
                 }}
               >

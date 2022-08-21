@@ -4,6 +4,9 @@ import { Box, Container, Grid, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
+import { ConfirmResetPasswordApi } from "../../apis/AuthApis";
+import { setIsOpenLoginPopUp } from "../../store/Global";
+import { useDispatch } from "react-redux";
 import CustomButton from "../CustomButton";
 const schema = yup
   .object({
@@ -19,18 +22,18 @@ const ResetPassword = () => {
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { userToken } = useParams();
+
   const onSubmit = async (data) => {
-    // const uid = userToken.split("-")[0];
-    // const token = userToken.split("-")[1] + "-" + userToken.split("-")[2];
-    // const { response, error } = await ConfirmResetPasswordApi({
-    //   ...data,
-    //   uid,
-    //   token,
-    // });
-    // if (response) {
-    //   navigate("/");
-    // }
+    const res = await ConfirmResetPasswordApi({
+      ...data,
+      userToken,
+    });
+    if (res) {
+      navigate("/");
+      dispatch(setIsOpenLoginPopUp(true));
+    }
   };
   return (
     <Box

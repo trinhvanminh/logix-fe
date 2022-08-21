@@ -9,6 +9,7 @@ import {
   Box,
   Chip,
 } from "@mui/material";
+import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenLoginPopUp } from "../../store/Global";
@@ -58,7 +59,6 @@ const MovieItem = () => {
         <CardContent>
           <Box
             sx={{
-              width: 200,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -66,28 +66,35 @@ const MovieItem = () => {
               height: "20px",
             }}
           >
-            <Rating
-              size="small"
-              sx={{
-                ".MuiRating-iconEmpty": {
-                  color: "white",
-                },
-              }}
-              value={value}
-              onChange={handleRating}
-              onChangeActive={(event, newHover) => {
-                setHover(newHover);
-              }}
-              emptyIcon={
-                <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-              }
-            />
+            <Stack alignItems="center" direction="row">
+              <Rating
+                size="small"
+                sx={{
+                  ".MuiRating-iconEmpty": {
+                    color: "white",
+                  },
+                }}
+                value={value}
+                onChange={handleRating}
+                onChangeActive={(event, newHover) => {
+                  setHover(newHover);
+                }}
+                emptyIcon={
+                  <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                }
+              />
+              <Typography
+                sx={{ fontSize: "12px", color: "#ccc" }}
+                component="span"
+              >
+                (15)
+              </Typography>
+            </Stack>
             {value !== null && (
               <Chip
                 label={labels[hover !== -1 ? hover : value]?.text}
                 size="small"
                 sx={{
-                  mx: 1,
                   bgcolor: labels[hover !== -1 ? hover : value]?.bgcolor,
                   fontSize: "12px",
                   fontWeight: "500",
