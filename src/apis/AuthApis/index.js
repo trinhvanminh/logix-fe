@@ -6,9 +6,8 @@ export const LoginApi = async (payload) => {
   const url = `${baseUrl}/api/auth/login`;
   try {
     const response = await axiosClient.post(url, payload);
-    return response.data;
+    return { response: response.data, error: null };
   } catch (err) {
-    console.log(err?.response?.data?.message);
     toast.error(
       <>
         Something went wrong with the login:
@@ -16,6 +15,7 @@ export const LoginApi = async (payload) => {
         {err.response?.data?.message}
       </>
     );
+    return { response: null, error: err };
   }
 };
 
@@ -24,9 +24,8 @@ export const RegisterApi = async (payload) => {
   try {
     const response = await axiosClient.post(url, payload);
     response && toast.success("Successfully registered");
-    return response.data;
+    return { response: response.data, error: null };
   } catch (err) {
-    console.log(err?.response?.data?.message);
     toast.error(
       <>
         Something went wrong with the registration:
@@ -34,6 +33,7 @@ export const RegisterApi = async (payload) => {
         {err.response?.data?.message}
       </>
     );
+    return { response: null, error: err };
   }
 };
 
@@ -41,7 +41,7 @@ export const ResetPasswordApi = async (payload) => {
   const url = `${baseUrl}/api/auth/reset-password`;
   try {
     const response = await axiosClient.post(url, payload);
-    return response;
+    return { response, error: null };
   } catch (err) {
     toast.error(
       <>
@@ -50,6 +50,7 @@ export const ResetPasswordApi = async (payload) => {
         {err.response?.data?.message}
       </>
     );
+    return { response: null, error: err };
   }
 };
 
@@ -67,7 +68,7 @@ export const ConfirmResetPasswordApi = async ({ new_password1, userToken }) => {
         },
       }
     );
-    return response;
+    return { response, error: null };
   } catch (err) {
     toast.error(
       <>
@@ -76,5 +77,6 @@ export const ConfirmResetPasswordApi = async ({ new_password1, userToken }) => {
         {err.response?.data?.message}
       </>
     );
+    return { response: null, error: err };
   }
 };

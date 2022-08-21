@@ -97,7 +97,7 @@ const LoginPopUp = () => {
     ),
   });
   const onSubmit = async (data) => {
-    // dispatch(setLoading(true));
+    dispatch(setLoading(true));
     if (isLoginMode === 1) {
       const isEmail =
         /* eslint-disable-next-line */
@@ -109,29 +109,29 @@ const LoginPopUp = () => {
         username: !isEmail && data.usernameOremail,
         password: data.password,
       };
-      const res = await LoginApi(payload);
-      if (res) {
+      const { response, error } = await LoginApi(payload);
+      if (response) {
         handleClose();
-        data?.keepLogin && localStorage.setItem("token", res.accessToken);
+        data?.keepLogin && localStorage.setItem("token", response.accessToken);
         dispatch(setAuthenticated(true));
-        dispatch(setLoading(false));
       }
+      dispatch(setLoading(false));
     }
     if (isLoginMode === 2) {
-      const res = await RegisterApi(data);
-      if (res) {
+      const { response, error } = await RegisterApi(data);
+      if (response) {
         handleClose();
-        localStorage.setItem("token", res.accessToken);
+        localStorage.setItem("token", response.accessToken);
         dispatch(setAuthenticated(true));
-        dispatch(setLoading(false));
       }
+      dispatch(setLoading(false));
     }
     if (isLoginMode === 3) {
-      const res = await ResetPasswordApi(data);
-      if (res) {
-        dispatch(setLoading(false));
+      const { response, error } = await ResetPasswordApi(data);
+      if (response) {
         handleChangeLoginMode(4);
       }
+      dispatch(setLoading(false));
     }
   };
   useEffect(() => {
