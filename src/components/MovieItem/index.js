@@ -1,24 +1,25 @@
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 
 import StarIcon from "@mui/icons-material/Star";
 import {
+  Box,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Grid,
+  IconButton,
   Rating,
   Typography,
-  Box,
-  Chip,
-  CardActions,
-  IconButton,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { createOrUpdateRateApi } from "../../apis/RateApis";
 import { setIsOpenLoginPopUp } from "../../store/Global";
 
 const labels = {
@@ -32,9 +33,7 @@ const labels = {
 const MovieItem = ({ movie }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.Auth.authenticated);
-  const [value, setValue] = useState(
-    parseInt((movie?.like * 5) / (movie?.like + movie?.dislike))
-  );
+  const [value, setValue] = useState(movie?.rate);
   const [hover, setHover] = React.useState(-1);
   const [likeStatus, setlikeStatus] = useState(0);
 
@@ -51,7 +50,13 @@ const MovieItem = ({ movie }) => {
     }
     setlikeStatus(value);
     //call api
-    // if errror => setlikeStatus(0)
+    createOrUpdateRateApi({ movie_id: movie._id, rate_status: value }).then(
+      ({ response }) => {
+        if (!response) {
+          setlikeStatus(movie.my_rate_status || 0);
+        }
+      }
+    );
   };
 
   return (
@@ -115,7 +120,7 @@ const MovieItem = ({ movie }) => {
                 }}
                 component="span"
               >
-                ({movie?.like + movie?.dislike || 0})
+                ({movie?.like_count + movie?.dislike_count || 0})
               </Typography>
             </Stack>
             {value !== null && (
