@@ -8,6 +8,7 @@ import {
   Typography,
   Box,
   Chip,
+  CardActions,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
@@ -109,6 +110,7 @@ const MovieItem = () => {
             Doraemon: Nobita Và Cuộc Chiến Vũ Trụ Tí Hon 2021
           </Typography>
         </CardContent>
+        <CardActions></CardActions>
       </Card>
     </Grid>
   );

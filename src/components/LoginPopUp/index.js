@@ -39,6 +39,7 @@ const LoginPopUp = () => {
           "Enter valid Username/Email",
           function (value) {
             const emailRegex =
+              /* eslint-disable-next-line */
               /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             const usernameRegex = /^[a-z0-9_-]{3,16}$/;
             let isValidEmail = emailRegex.test(value);
@@ -99,6 +100,7 @@ const LoginPopUp = () => {
     // dispatch(setLoading(true));
     if (isLoginMode === 1) {
       const isEmail =
+        /* eslint-disable-next-line */
         /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
           data.usernameOremail
         );
