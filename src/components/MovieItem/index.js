@@ -33,7 +33,6 @@ const labels = {
 const MovieItem = ({ movie }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.Auth.authenticated);
-  const [value, setValue] = useState(movie?.rate);
   const [hover, setHover] = React.useState(-1);
   const [likeStatus, setlikeStatus] = useState(0);
 
@@ -105,7 +104,7 @@ const MovieItem = ({ movie }) => {
                     color: "white",
                   },
                 }}
-                value={value}
+                value={movie?.rate}
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
                 }}
@@ -123,12 +122,12 @@ const MovieItem = ({ movie }) => {
                 ({movie?.like_count + movie?.dislike_count || 0})
               </Typography>
             </Stack>
-            {value !== null && (
+            {movie?.rate !== null && (
               <Chip
-                label={labels[hover !== -1 ? hover : value]?.text}
+                label={labels[hover !== -1 ? hover : movie?.rate]?.text}
                 size="small"
                 sx={{
-                  bgcolor: labels[hover !== -1 ? hover : value]?.bgcolor,
+                  bgcolor: labels[hover !== -1 ? hover : movie?.rate]?.bgcolor,
                   fontSize: "12px",
                   fontWeight: "500",
                 }}
