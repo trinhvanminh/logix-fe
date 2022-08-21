@@ -78,6 +78,7 @@ const MovieItem = ({ movie }) => {
         <CardMedia
           component="img"
           image={movie?.thumbnail_url}
+          title={movie?.title}
           sx={{
             cursor: "pointer",
             height: "300px",
