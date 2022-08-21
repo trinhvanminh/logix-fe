@@ -99,6 +99,7 @@ const MovieItem = ({ movie }) => {
               height: "20px",
             }}
           >
+            {console.log(movie?.rate)}
             <Stack alignItems="center" direction="row">
               <Rating
                 size="small"
@@ -107,7 +108,11 @@ const MovieItem = ({ movie }) => {
                     color: "white",
                   },
                 }}
-                value={movie?.rate}
+                value={
+                  movie?.like_count + movie?.dislike_count === 0
+                    ? 0
+                    : movie?.rate || 1
+                }
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
                 }}
@@ -125,17 +130,30 @@ const MovieItem = ({ movie }) => {
                 ({movie?.like_count + movie?.dislike_count || 0})
               </Typography>
             </Stack>
-            {movie?.rate && (
-              <Chip
-                label={labels[hover !== -1 ? hover : movie?.rate]?.text}
-                size="small"
-                sx={{
-                  bgcolor: labels[hover !== -1 ? hover : movie?.rate]?.bgcolor,
-                  fontSize: "12px",
-                  fontWeight: "500",
-                }}
-              />
-            )}
+            <Chip
+              label={
+                labels[
+                  hover !== -1
+                    ? hover
+                    : movie?.like_count + movie?.dislike_count === 0
+                    ? 0
+                    : movie?.rate || 1
+                ]?.text
+              }
+              size="small"
+              sx={{
+                bgcolor:
+                  labels[
+                    hover !== -1
+                      ? hover
+                      : movie?.like_count + movie?.dislike_count === 0
+                      ? 0
+                      : movie?.rate || 1
+                  ]?.bgcolor,
+                fontSize: "12px",
+                fontWeight: "500",
+              }}
+            />
           </Box>
           <Typography
             sx={{

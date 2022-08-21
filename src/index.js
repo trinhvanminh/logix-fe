@@ -8,6 +8,7 @@ import MainLayout from "./pages/MainLayout";
 import { Provider } from "react-redux";
 import store from "./store";
 import ResetPassword from "./components/ResetPassword";
+import NotFound from "./components/NotFound";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,6 +25,7 @@ root.render(
               path="reset-password/confirm/:userToken"
               element={<ResetPassword />}
             />
+            <Route path="/*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
