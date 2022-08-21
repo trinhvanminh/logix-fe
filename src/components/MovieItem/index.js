@@ -40,7 +40,10 @@ const MovieItem = ({ movie }) => {
     if (movie?.my_rate_status) {
       setlikeStatus(movie.my_rate_status);
     }
-  }, [movie]);
+    if (!isAuthenticated) {
+      setlikeStatus(0);
+    }
+  }, [movie, isAuthenticated]);
 
   const handleLikeDislike = (value) => {
     if (!isAuthenticated) {
@@ -122,7 +125,7 @@ const MovieItem = ({ movie }) => {
                 ({movie?.like_count + movie?.dislike_count || 0})
               </Typography>
             </Stack>
-            {movie?.rate !== null && (
+            {movie?.rate && (
               <Chip
                 label={labels[hover !== -1 ? hover : movie?.rate]?.text}
                 size="small"

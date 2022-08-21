@@ -87,6 +87,7 @@ const LoginPopUp = () => {
         .oneOf([yup.ref("password")], "Passwords do not match"),
     })
     .required();
+
   const { handleSubmit, control, reset } = useForm({
     resolver: yupResolver(
       isLoginMode === 1
@@ -112,7 +113,7 @@ const LoginPopUp = () => {
       const { response } = await LoginApi(payload);
       if (response) {
         handleClose();
-        data?.keepLogin && localStorage.setItem("token", response.accessToken);
+        localStorage.setItem("token", response.accessToken);
         dispatch(setAuthenticated(true));
       }
       dispatch(setLoading(false));
@@ -134,6 +135,7 @@ const LoginPopUp = () => {
       dispatch(setLoading(false));
     }
   };
+
   useEffect(() => {
     let flag = true;
     flag && setIsLoginMode(1);
@@ -141,6 +143,7 @@ const LoginPopUp = () => {
       flag = false;
     };
   }, [open]);
+
   return (
     <>
       <Dialog
@@ -223,46 +226,24 @@ const LoginPopUp = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sx={{ pt: "16px !important" }}>
-                  <Controller
-                    name="keepLogin"
-                    control={control}
-                    defaultValue={false}
-                    render={({ field: { onChange } }) => {
-                      return (
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="space-between"
-                        >
-                          <Stack direction="row" alignItems="center">
-                            <Checkbox
-                              sx={{ paddingLeft: "0px", color: "white" }}
-                              id="keepLogin"
-                              onChange={onChange}
-                              disableRipple
-                            />
-                            <label
-                              htmlFor="keepLogin"
-                              style={{ color: "white" }}
-                            >
-                              Remember Me
-                            </label>
-                          </Stack>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              textDecoration: "underline",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleChangeLoginMode(3)}
-                          >
-                            Forgot password?
-                          </Typography>
-                        </Stack>
-                      );
-                    }}
-                  />
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Stack direction="row" alignItems="center"></Stack>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: 14,
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleChangeLoginMode(3)}
+                    >
+                      Forgot password?
+                    </Typography>
+                  </Stack>
                 </Grid>
                 <Grid
                   item
